@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "E:/Library/JSU-Data-Structure-And-Algorithm-Design/assignments/Assignment_01/head"
             ],
             "defines": [
                 "_DEBUG",
