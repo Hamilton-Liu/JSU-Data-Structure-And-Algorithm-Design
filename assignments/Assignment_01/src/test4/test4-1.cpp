@@ -1,0 +1,59 @@
+#include <iostream>
+#include <assert.h>
+using namespace std;
+#include "status.h"
+#include "Node.h"
+#include "LinkList.h"
+
+template <class DataType>
+void Display(const DataType & e) 
+{    cout << e << "    ";    }
+
+//4-1 插入函数：把元素值e作为数据元素插入表中，使得插入后的表仍然有序。
+template <class DataType>
+Status OrdListInsertElem(LinkList<DataType> &list,DataType e){
+    DataType tmp;
+    for(int i = 1; i <= list.GetLength(); i++){
+        list.GetElem(i,tmp);
+        if(e <= tmp){
+            list.InsertElem(i,e);
+            return SUCCESS;
+        }
+    }list.InsertElem(list.GetLength()+1,e);
+}
+
+int main(void)
+{
+	LinkList<int> list;
+	int data;
+
+	cout << "Please enter 11 ordered integers(5 10 11 22 27 33 44 44 55 56 60):" << endl;//输入：5 10 11 22 27 33 44 44 55 56 60
+	for(int i=1; i<=11; i++)
+	{
+		cin >> data;
+		list.InsertElem(i, data);
+	}
+	
+	//------------以下用于测试第1小题---------------------------------
+	cout << "Please enter an integer to be inserted(3):" << endl;
+	cin >> data;//输入：3
+	OrdListInsertElem(list,data);//----------调用第1小题函数
+	cout << "After insertion, list is:" << endl;
+	list.Traverse(Display);
+	cout << endl;
+	cout << "Please enter an integer to be inserted(27):" << endl;
+	cin >> data;//输入：27
+	OrdListInsertElem(list,data);//----------调用第1小题函数
+	cout << "After insertion, list is:" << endl;
+	list.Traverse(Display);
+	cout << endl;
+	cout << "Please enter an integer to be inserted(77):" << endl;
+	cin >> data;//输入：77
+	OrdListInsertElem(list,data);//----------调用第1小题函数
+	cout << "After insertion, list is:" << endl;
+	list.Traverse(Display);
+	cout << endl << endl;
+	
+	system("pause");
+	return 0;
+}
