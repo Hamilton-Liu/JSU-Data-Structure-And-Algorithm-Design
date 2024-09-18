@@ -1,9 +1,10 @@
 #import "@preview/cuti:0.2.1": show-cn-fakebold
+#show: show-cn-fakebold
 #set text(16pt,font:("STIX Two Text","SimSun"))
 #let indent()={ box(width: 3em) }
 #let space()={ box(width: 0.2em) }
 #set align(center)
-#text(weight:"bold")[= 实验题第1题]
+#text(weight:"black")[= 实验题第1题]
 
 #set align(left) 
 #set text(11pt)

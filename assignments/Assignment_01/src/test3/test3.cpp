@@ -1,0 +1,72 @@
+#include <iostream>
+#include <assert.h>
+using namespace std;
+#include "Status.h"
+#include "Node.h"
+#include "LinkList.h"
+
+template <class DataType>
+void Display(const DataType & e) 
+{    cout << e << "    ";    }
+
+//3-2
+template <class DataType>
+int Frequency(LinkList<DataType> &list, DataType &e){
+	int count = 0;
+	DataType tmp;
+	for(int i = 1; i <= list.GetLength(); i++){
+		list.GetElem(i,tmp);
+		if(tmp == e) count++;
+	}
+	return count;
+}
+
+int main(void)
+{
+	LinkList<int> list;
+	Node<int> *p;
+	int data;
+
+	cout << "Please enter 10 integers(21 32 3 11 11 11 41 26 11 5):" << endl;//输入：21 32 3 11 11 11 41 26 11 5
+	for(int i=1; i<=10; i++)
+	{
+		cin >> data;
+		list.InsertElem(i, data);
+	}
+	
+	//-------以下用于测试第1小题-------------------------
+	cout << "Please enter the serial number of the data to be located(1):" << endl;
+	cin >> data;//输入：1
+	if(p=list.LocateAddress(data))//-------------对第1小题成员函数的调用
+		cout << "The address of the data is: " << p << endl;
+	else
+		cout << "The serial number is wrong!" << endl;
+	cout << "Please enter the serial number of the data to be located(5):" << endl;
+	cin >> data;//输入：5
+	if(p=list.LocateAddress(data))//-------------对第1小题成员函数的调用
+		cout << "The address of the data is: " << p << endl;
+	else
+		cout << "The serial number is wrong!" << endl;
+	cout << "Please enter the serial number of the data to be located(15):" << endl;
+	cin >> data;//输入：15
+	if (p = list.LocateAddress(data))//-------------对第1小题成员函数的调用
+		cout << "The address of the data is: " << p << endl;
+	else
+		cout << "The serial number is wrong!" << endl;
+	cout << endl;
+
+	//-------以下用于测试第2小题-------------------------
+	cout << "Please enter the data to be counted(3):" << endl;
+	cin >> data;//输入：3
+	cout << "The number of the data to be counted is: " << Frequency(list,data) << endl;//-------------对第2小题成员函数的调用
+	cout << "Please enter the data to be counted(11):" << endl;
+	cin >> data;//输入：11
+	cout << "The number of the data to be counted is: " << Frequency(list,data) << endl;//-------------对第2小题成员函数的调用
+	cout << "Please enter the data to be counted(7):" << endl;
+	cin >> data;//输入：7
+	cout << "The number of the data to be counted is: " << Frequency(list, data) << endl;//-------------对第2小题成员函数的调用
+	cout << endl;
+
+	system("pause");
+	return 0;
+}
