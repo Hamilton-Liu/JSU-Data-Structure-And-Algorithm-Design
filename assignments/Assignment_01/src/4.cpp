@@ -1,7 +1,7 @@
 #include <iostream>
 #include <assert.h>
 using namespace std;
-#include "status.h"
+#include "Status.h"
 #include "Node.h"
 #include "LinkList.h"
 
