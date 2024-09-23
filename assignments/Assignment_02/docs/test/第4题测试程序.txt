@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+#include "Status.h"
+#include "LinkQueue.h"
+
+int main(void)
+{
+	int n;
+
+	cout << "Please enter the order of binomial(5):" << endl;
+	do{
+		cin >> n;//输入5
+		if(n <= 0)
+			cout << "The order of binomial must be greater than 0, please re-enter(5):" << endl;
+	}while(n <= 0);
+	cout << "The Yang Hui triangle with order " << n << " is as follows:" << endl;
+	YangHui(n);//------------------------------调用生成与打印杨辉三角的函数
+	cout << endl;
+
+	cout << "Please enter the order of binomial(8):" << endl;
+	do{
+		cin >> n;//输入8
+		if(n <= 0)
+			cout << "The order of binomial must be greater than 0, please re-enter(8):" << endl;
+	}while(n <= 0);
+	cout << "The Yang Hui triangle with order " << n << " is as follows:" << endl;
+	YangHui(n);//------------------------------调用生成与打印杨辉三角的函数
+
+	system("pause");
+	return 0;
+}
