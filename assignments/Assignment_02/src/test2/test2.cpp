@@ -6,7 +6,6 @@ using namespace std;
 
 //利用两个栈sl和s2的操作可以模拟一个队列的操作，请写出使用两个栈实现入队、出队和判队列空的函数。
 
-
 int main(void)
 {
 	Queue<int> queue;

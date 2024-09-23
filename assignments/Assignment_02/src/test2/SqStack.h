@@ -5,9 +5,9 @@ template<class DataType>
 class SqStack
 {
 	DataType *elems;								//元素存储空间
+public:
 	int maxSize;									//栈的容量 
 	int top;										//栈顶指针
-public:
 	SqStack(int size = DEFAULT_SIZE);				//构造函数
 	virtual ~SqStack();								//析构函数
 	int GetLength() const;							//求栈的长度
@@ -66,9 +66,9 @@ template<class DataType>
 Status SqStack<DataType>::Pop(DataType &e)	//若出栈成功，用e返回栈顶元素的值
 {
 	if (IsEmpty())						//判断栈是否为空
-		return UNDER_FLOW;			//栈空，返回下溢信息
+		return UNDER_FLOW;				//栈空，返回下溢信息
 	else {								//栈不为空
-		e = elems[top--];					//获取当前栈顶元素的值，并删除该元素
+		e = elems[top--];				//获取当前栈顶元素的值，并删除该元素
 		return SUCCESS; 				//返回成功信息
 	}
 }
