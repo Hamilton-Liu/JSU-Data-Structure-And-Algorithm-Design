@@ -66,3 +66,9 @@ void InsertLeftChild(BTNode<DataType> *p, DataType e){
     }   
 }
 
+//插入右孩子
+template<class DataType>
+void InsertRightChild(BTNode<DataType> *p, DataType e){
+    
+}
+
