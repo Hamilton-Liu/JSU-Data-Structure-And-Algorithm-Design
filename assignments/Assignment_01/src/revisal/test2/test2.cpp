@@ -64,6 +64,11 @@ Status OrdListMerge(SqList<DataType> &list1, SqList<DataType> &list2, SqList<Dat
     }
     return SUCCESS;												//返回成功信息
 }
+//2-3 订正: 合并两个有序表，得到一个新的有序表。
+template <class DataType>
+Status OrdListMerge(SqList<DataType> &list1, SqList<DataType> &list2, SqList<DataType> &list3){
+
+}
 
 //2-4 从有序顺序表中删除其值在给定值s与t之间（s＜t）的所有元素，即删除取值在[s,t]之间的所有元素；如果s≥t或顺序表为空，则显示出错信息，并退出运行。
 template <class DataType>

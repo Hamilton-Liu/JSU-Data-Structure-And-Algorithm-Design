@@ -4,7 +4,7 @@ template<class DataType>
 class BinaryTree{
 protected:
     BTNode<DataType> *root;
-    void Destory(BTNode<DataType>* &r);
+    void Destroy(BTNode<DataType>* &r);
     void PreOrder(BTNode<DataType>* &r, void(*visit)(const DataType &));
     void InOrder(BTNode<DataType>* &r, void(*visit)(const DataType &));
     void PostOrder(BTNode<DataType>* &r, void(*visit)(const DataType &));
