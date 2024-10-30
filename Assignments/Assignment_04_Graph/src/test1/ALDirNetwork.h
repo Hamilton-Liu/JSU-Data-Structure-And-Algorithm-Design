@@ -2,6 +2,8 @@
 #include "Status.h"
 #include "ALNetworkArc.h"
 #include "ALNetworkVex.h"
+#include <fstream>
+#include <filesystem>
 const int DEFAULT_SIZE = 100;
 const int DEFAULT_INFINITY = 0x3f3f3f3f;
 template<class DataType, class WeightType>
@@ -344,12 +346,12 @@ void ALDirNetwork<DataType, WeightType>::Display()	//显示有向网邻接表
 
 //读取数据并创建有向图graph
 template <class DataType, class WeightType>
-int LoadData(ALDirNetwork<DataType,WeightType> net)
+bool LoadData(ALDirNetwork<DataType,WeightType> &net)
 {
-    ifstream file("E:/Library/JSU-Data-Structure-And-Algorithm-Design/Assignments/Assignment_04_Graph/docs/data/GraphData.txt");
+    ifstream file("E:\\Library\\JSU-Data-Structure-And-Algorithm-Design\\Assignments\\Assignment_04_Graph\\docs\\data\\GraphData.txt");
     if(!file.is_open()){
-        cout << "Cannot open the file!" << endl;
-        return 0;
+        cout << "Cannot find the file." << endl;
+        return false;
     }
     
     int VexNum, ArcNum;
@@ -365,12 +367,12 @@ int LoadData(ALDirNetwork<DataType,WeightType> net)
     
     for (int i = 0; i < ArcNum; i++)
     {
-        char from, to;
+        int from, to;
         int weight;
         file >> from >> to >> weight;
         net.InsertArc(from, to, weight);
     }
-    return 1;
+    return true;
 }
 
 //深度优先遍历
@@ -402,6 +404,14 @@ void DFSTraverse(const ALDirNetwork<DataType,WeightType> &graph,void(*visit)(con
 template <class DataType, class WeightType>
 void BFS(const ALDirNetwork<DataType,WeightType> &g, int v,void(*visit)(const DataType &))
 {
+	LinkQueue<int> vexq;
+	int u, w;
+	DataType e;
+
+	g.SetVisitedTag(v,VISITED);
+	g.GetElem(v,e); visit(e);
+	vexq.EnQueue(v);
+	While()
 }
 //接口函数
 template <class DataType, class WeightType>

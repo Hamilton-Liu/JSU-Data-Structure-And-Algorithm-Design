@@ -12,14 +12,14 @@ using namespace std;
 void Display(const char &e)
 {    cout << e << " ";    }
 
-//ï¼ˆ1ï¼‰åŸºäºå›¾çš„æ·±åº¦ä¼˜å…ˆæœç´¢ç­–ç•¥å†™ä¸€ä¸ªç®—æ³•ï¼Œåˆ¤åˆ«æœ‰å‘å›¾ä¸­æ˜¯å¦å­˜åœ¨ç”±é¡¶ç‚¹viåˆ°é¡¶ç‚¹vjçš„è·¯å¾„ï¼ˆi!=jï¼‰ã€‚
+//£¨1£©»ùÓÚÍ¼µÄÉî¶ÈÓÅÏÈËÑË÷²ßÂÔĞ´Ò»¸öËã·¨£¬ÅĞ±ğÓĞÏòÍ¼ÖĞÊÇ·ñ´æÔÚÓÉ¶¥µãviµ½¶¥µãvjµÄÂ·¾¶£¨i!=j£©¡£
 int main(void)
 {
 	ALDirNetwork<char,int> graph(20,9999);
 	char start,end;
 
-	//ä»æ–‡ä»¶GraphData.txtä¸­è¯»å–æœ‰å‘å›¾æ•°æ®ï¼Œå»ºç«‹å›¾graph
-	if(!LoadData(graph))//--------------------è°ƒç”¨LoadDataå‡½æ•°ä»æ–‡ä»¶GraphData.txtè¯»å–æœ‰å‘å›¾æ•°æ®å»ºç«‹å›¾graphï¼Œè¯·è‡ªå·±å®ç°
+	//´ÓÎÄ¼şGraphData.txtÖĞ¶ÁÈ¡ÓĞÏòÍ¼Êı¾İ£¬½¨Á¢Í¼graph
+	if(!LoadData(graph))//--------------------µ÷ÓÃLoadDataº¯Êı´ÓÎÄ¼şGraphData.txt¶ÁÈ¡ÓĞÏòÍ¼Êı¾İ½¨Á¢Í¼graph£¬Çë×Ô¼ºÊµÏÖ
 	{
 		cout << "Failed to create graph!" << endl;
 		exit(1);
