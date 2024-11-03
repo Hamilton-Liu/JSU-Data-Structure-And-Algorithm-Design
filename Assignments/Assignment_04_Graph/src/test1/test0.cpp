@@ -12,7 +12,6 @@ using namespace std;
 void Display(const char &e)
 {    cout << e << " ";    }
 
-//（1）基于图的深度优先搜索策略写一个算法，判别有向图中是否存在由顶点vi到顶点vj的路径（i!=j）。
 int main(void)
 {
 	ALDirNetwork<char,int> graph(20,9999);

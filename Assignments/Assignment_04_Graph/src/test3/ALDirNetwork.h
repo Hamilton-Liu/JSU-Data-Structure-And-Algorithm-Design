@@ -493,7 +493,7 @@ void BFSTraverse(const ALDirNetwork<DataType,WeightType> &graph,void(*visit)(con
 
 //
 template <class DataType, class WeightType>
-bool ExistPathDFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
+bool ExistPathDFSh(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
 	int v1 = graph.GetOrder(a);
 	int v2 = graph.GetOrder(b);
 	if(a == b) return true;
@@ -504,8 +504,57 @@ bool ExistPathDFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, Da
 		DataType e;
 		graph.GetElem(w1, e);
 		if(graph.GetVisitedTag(w1) == UNVISITED)
-        	if(ExistPathDFS(graph, e, b))
+        	if(ExistPathDFSh(graph, e, b))
 				return true;
+	}
+	return false;
+}
+template <class DataType, class WeightType>
+bool ExistPathDFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
+	if(ExistPathDFSh(graph, a, b)){
+		for (int v = 0; v < graph.GetVexNum(); v++) {
+        	graph.SetVisitedTag(v, UNVISITED);
+    	}
+		return true;
+	}
+	else{
+		for (int v = 0; v < graph.GetVexNum(); v++) {
+        	graph.SetVisitedTag(v, UNVISITED);
+    	}
+		return false;
+	}		
+}
+	
+
+template <class DataType, class WeightType>
+bool ExistPathBFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
+	//重置访问数组
+	for (int v = 0; v < graph.GetVexNum(); v++) {
+        graph.SetVisitedTag(v, UNVISITED);
+    }
+	int v1 = graph.GetOrder(a);
+	int v2 = graph.GetOrder(b);
+	if(a == b) return true;
+
+	LinkQueue<int> vexq;
+	int u,w;
+	DataType e;
+
+	graph.SetVisitedTag(v1,VISITED);
+	vexq.EnQueue(v1);
+
+	while(!vexq.IsEmpty()){
+		vexq.DelQueue(u);
+		for(w = graph.GetFirstAdjvex(u); w != -1; w = graph.GetNextAdjvex(u,w)){
+			if (graph.GetVisitedTag(w) == UNVISITED){
+				graph.GetElem(w, e);
+				graph.SetVisitedTag(w, VISITED);
+				vexq.EnQueue(w);
+				if(e == b) {
+					return true;
+				}
+			}
+		}
 	}
 	return false;
 }
