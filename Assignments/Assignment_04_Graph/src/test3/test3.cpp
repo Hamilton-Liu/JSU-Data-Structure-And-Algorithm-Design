@@ -11,6 +11,8 @@ using namespace std;
 void Display(const char &e)
 {    cout << e << " ";    }
 
+
+//（3）利用Dijkstra算法求指定源点到其余各顶点的最短路径,要求输出最短路径及其长度。
 int main(void)
 {
 	ALDirNetwork<char,int> graph(20,9999);
@@ -50,6 +52,20 @@ int main(void)
 		cout << "According to the breadth first search strategy, there is a path between " << start << " and " << end << endl;
 	else
 		cout << "According to the breadth first search strategy, there is no path between " << start << " and " << end << endl;
+	//-----------------------------以下测试第3小题------------------------------------------------
+	//cout << "Please enter the start point for calculating the shortest path(A):" << endl;
+	//cin >> start;//输入：A
+	int *path = new int[graph.GetVexNum()],*dist = new int[graph.GetVexNum()];
+	start = 'A';
+	Dijkstra(graph,graph.GetOrder(start), dist, path);//------------------调用第3小题函数--------------------------
+	//输出起点到所有顶点的最短路径和最短路径长度
+	OutputShortestPath(graph,graph.GetOrder(start), dist, path);//-------------------调用OutputShortestPath函数输出结果，请自己实现
+	start = 'C';
+	Dijkstra(graph, graph.GetOrder(start), dist, path);//------------------调用第3小题函数--------------------------
+	 //输出起点到所有顶点的最短路径和最短路径长度
+	OutputShortestPath(graph, graph.GetOrder(start), dist, path);//-------------------调用OutputShortestPath函数输出结果，请自己实现
+	delete []path;
+	delete []dist;
 
 	system("pause");
 	return 0;

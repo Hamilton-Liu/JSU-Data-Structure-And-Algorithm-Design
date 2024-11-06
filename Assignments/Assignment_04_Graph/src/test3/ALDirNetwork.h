@@ -4,7 +4,6 @@
 #include "ALNetworkVex.h"
 #include "LinkQueue.h"
 #include <fstream>
-#include <filesystem>
 const int DEFAULT_SIZE = 100;
 const int DEFAULT_INFINITY = 0x3f3f3f3f;
 template<class DataType, class WeightType>
@@ -395,7 +394,7 @@ void ALDirNetwork<DataType, WeightType>::Display()	//显示有向网邻接表
 template <class DataType, class WeightType>
 bool LoadData(ALDirNetwork<DataType,WeightType> &net)
 {
-    ifstream file("E:\\Library\\JSU-Data-Structure-And-Algorithm-Design\\Assignments\\Assignment_04_Graph\\docs\\data\\GraphData.txt");
+    ifstream file("GraphData.txt");
     if(!file.is_open()){
         cout << "Cannot find the file." << endl;
         return false;
@@ -491,7 +490,18 @@ void BFSTraverse(const ALDirNetwork<DataType,WeightType> &graph,void(*visit)(con
     }
 }
 
-//
+
+/*template <class DataType, class WeightType>
+void DFS(const ALDirNetwork<DataType,WeightType> &g, int v,void(*visit)(const DataType &))
+{
+    DataType e;
+    g.SetVisitedTag(v,VISITED);
+    g.GetElem(v, e); visit(e);
+    for(int w = g.GetFirstAdjvex(v); w != -1; w = g.GetNextAdjvex(v,w)){
+		if(g.GetVisitedTag(w) == UNVISITED)
+        	DFS(g, w, visit);
+	}
+}*/
 template <class DataType, class WeightType>
 bool ExistPathDFSh(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
 	int v1 = graph.GetOrder(a);
@@ -557,4 +567,78 @@ bool ExistPathBFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, Da
 		}
 	}
 	return false;
+}
+
+//Dijkstra算法
+template <class DataType, class WeightType>
+void Dijkstra(const ALDirNetwork<DataType,WeightType> &g, int v0,WeightType* dist,int* path){
+	WeightType mindist, infinity = g.GetInfinity();
+	int u, v;
+	for(v = 0; v < g.GetVexNum(); v++){
+		dist[v]   = g.GetWeight(v0, v);
+		if (dist[v] == infinity) path[v] = -1;
+		else path[v] = v0;
+		g.SetVisitedTag(v, UNVISITED);
+	}
+	g.SetVisitedTag(v0, VISITED);
+	for (int i = 1; i < g.GetVexNum(); i++){
+		u = v0;
+		mindist = infinity;
+		for(v = 0; v < g.GetVexNum(); v++)
+			if (g.GetVisitedTag(v) == UNVISITED && dist[v] < mindist){
+				u = v;
+				mindist = dist[v];
+			}
+		g.SetVisitedTag(u, VISITED);
+		for(v = g.GetFirstAdjvex(u); v != -1; v = g.GetNextAdjvex(u,v ))
+			if (g.GetVisitedTag(v) == UNVISITED && mindist + g.GetWeight(u, v) < dist[v]){
+				dist[v] = mindist + g.GetWeight(u, v);
+				path[v] = u;
+			}
+	}
+}
+
+//OutputShortestPath输出函数
+template <class DataType, class WeightType>
+void OutputShortestPath(const ALDirNetwork<DataType, WeightType> &g, int v0, WeightType* dist, int* path) {
+    int vexNum = g.GetVexNum();
+    WeightType infinity = g.GetInfinity();
+    DataType a,b;
+
+    for (int v = 0; v < vexNum; v++) {
+        if (v == v0) continue; // 跳过起点自身
+
+        // 检查是否可达
+        if (dist[v] == infinity) {
+			g.GetElem(v0,a);
+			g.GetElem(v,b);
+            cout << "There is no path between " << a << " and " << b << endl;
+        } else {
+            // 构建路径数组
+            int pathArray[vexNum]; // 存储路径的数组
+            int count = 0;         // 记录路径中的节点数
+            int current = v;
+
+            // 通过 path 数组向前追溯路径
+            while (current != -1) {
+                pathArray[count++] = current;
+                current = path[current];
+            }
+
+			// 反向输出路径
+			g.GetElem(v0,a);
+			g.GetElem(v,b);
+            cout << "The shortest path between " << a << " and " << b << " is:" << endl ;
+            for (int i = count - 1; i >= 0; i--) {
+				DataType e;
+				g.GetElem(pathArray[i], e);
+                cout << e;
+                if (i > 0) cout << " ";
+            }
+            cout << endl;
+
+			// 输出最短路径长度
+            cout << "The distance is: " << dist[v] <<endl;
+        }
+    }
 }
