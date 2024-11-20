@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main(void)
+{
+	int n, truePos, result;//硬币数目，假币真实编号，查找结果
+	int * weight;//硬币重量数组
+
+	cout << "Please enter the number of coins(11):" << endl;
+	cin >> n;//输入:11
+	weight = new int[n + 1];
+	for (int i = 1; i <= n; i++)
+		weight[i] = 2;
+	cout << "Please enter the serial number of counterfeit coin(6): " << endl;
+	cin >> truePos;//输入:6
+	weight[truePos] = 1;
+	result = Solve(weight, 1, n);//------------------------------调用函数在编号为1..n的范围内寻找假币的编号
+	if (result == truePos)
+		cout << "You have found the serial number of counterfeit coin correctly that is " << result << endl;
+	else
+	{
+		cout << "You have not found the serial number of counterfeit coin correctly." << endl;
+		cout << "The correct serial number is " << truePos << " , but your result is " << result << endl;
+	}
+	delete []weight;
+
+	system("pause");
+	return 0;
+}

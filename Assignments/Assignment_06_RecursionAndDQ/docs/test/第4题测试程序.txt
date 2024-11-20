@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+int main(void)
+{
+	int n;//整数数目
+	int *a;//整数数组
+	int mode, max;//mode：众数，max：众数的重数
+	
+	cout << "Please enter the number of integers(12):" << endl;
+	cin >> n;//输入：12
+	a = new int[n];
+	cout << "Please enter " << n << " integers in ascending order(1 2 2 3 3 3 3 3 6 6 6 6):" << endl;//输入：1 2 2 3 3 3 3 3 6 6 6 6
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
+	max = 0;
+	mode = GetMode(a, 0, n - 1, max);//------------------调用函数在数组a中从下标0到n-1的范围中寻找众数mode，其重数为max
+	cout << "The mode of the sequence is: " << mode << endl;
+	cout << "And the count is: " << max << endl;
+	delete []a;
+
+	system("pause");
+	return 0;
+}
