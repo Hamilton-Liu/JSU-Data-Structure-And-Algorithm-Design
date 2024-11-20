@@ -2,8 +2,6 @@
 #include "Status.h"
 #include "ALNetworkArc.h"
 #include "ALNetworkVex.h"
-#include "LinkQueue.h"
-#include <fstream>
 const int DEFAULT_SIZE = 100;
 const int DEFAULT_INFINITY = 0x3f3f3f3f;
 template<class DataType, class WeightType>
@@ -44,7 +42,7 @@ public:
 template<class DataType, class WeightType>
 ALDirNetwork<DataType, WeightType>::ALDirNetwork(int vexsize, WeightType infinit)
 {
-	vexNum = 0;  vexMaxSize = vexsize;  arcNum = 0;  infinity = infinit;
+	vexNum = 0;  verMaxSize = vexsize;  arcNum = 0;  infinity = infinit;
 	vexs = new ALNetworkVex<DataType, WeightType>[vexMaxSize]; 		//分配顶点数组
 	visited = new Status[vexMaxSize]; 								//分配访问标志数组
 	for(int v = 0; v < vexNum; v++) {								//初始化顶点数组、访问标志数组
@@ -180,8 +178,7 @@ Status ALDirNetwork<DataType, WeightType>::InsertVex(const DataType &e) {	//插入
 	return SUCCESS;
 }
 
-//头插法
-/* template<class DataType, class WeightType>
+template<class DataType, class WeightType>
 Status ALDirNetwork<DataType, WeightType>::InsertArc(int v1, int v2, WeightType w) {	//插入从顶点v1到v2，权为w的弧
 	if(v1 < 0 || v1 >= vexNum) 						//判断v1是否越界
 	{
@@ -202,51 +199,6 @@ Status ALDirNetwork<DataType, WeightType>::InsertArc(int v1, int v2, WeightType 
 	vexs[v1].firstarc = new ALNetworkArc<WeightType>(v2, w, vexs[v1].firstarc);
 	arcNum++;
 	return SUCCESS;
-} */
-
-//尾插法
-template<class DataType, class WeightType>
-Status ALDirNetwork<DataType, WeightType>::InsertArc(int v1, int v2, WeightType w) {
-    // 判断v1是否越界
-    if (v1 < 0 || v1 >= vexNum) {
-        cout << "v1取值不合法!" << endl;
-        return FAILED;
-    }
-    // 判断v2是否越界
-    if (v2 < 0 || v2 >= vexNum) {
-        cout << "v2取值不合法!" << endl;
-        return FAILED;
-    }
-    // 判断v1和v2是否相等
-    if (v1 == v2) {
-        cout << "v1与v2不能相等!" << endl;
-        return FAILED;
-    }
-    // 判断权值w是否为无穷大
-    if (w == infinity) {
-        cout << "权值w不能为无穷大!" << endl;
-        return FAILED;
-    }
-
-    // 创建新弧
-    ALNetworkArc<WeightType>* newArc = new ALNetworkArc<WeightType>(v2, w, nullptr);
-
-    // 找到vexs[v1]的最后一个弧
-    if (vexs[v1].firstarc == nullptr) {
-        // 如果没有弧，则直接插入
-        vexs[v1].firstarc = newArc;
-    } else {
-        // 找到最后一个弧
-        ALNetworkArc<WeightType>* c = vexs[v1].firstarc;
-        while (c->nextarc != nullptr) {
-            c = c->nextarc;
-        }
-        // 将新弧插入到最后
-        c->nextarc = newArc;
-    }
-
-    arcNum++;
-    return SUCCESS;
 }
 
 template<class DataType, class WeightType>
@@ -388,257 +340,4 @@ void ALDirNetwork<DataType, WeightType>::Display()	//显示有向网邻接表
 		}
 		cout << endl;
 	}
-}
-
-//读取数据并创建有向图graph
-template <class DataType, class WeightType>
-bool LoadData(ALDirNetwork<DataType,WeightType> &net)
-{
-    ifstream file("E:\\Library\\JSU-Data-Structure-And-Algorithm-Design\\Assignments\\Assignment_04_Graph\\src\\test3GraphData.txt");
-    if(!file.is_open()){
-        cout << "Cannot find the file." << endl;
-        return false;
-    }
-    
-    int VexNum, ArcNum;
-    file >> VexNum; file >> ArcNum;
-    //net = ALDirNetwork<char,int>(VexNum, ArcNum);
-
-    for (int i = 0; i < VexNum; i++)
-    {
-        char Vex;
-        file >> Vex;
-        net.InsertVex(Vex);
-    }
-    
-    for (int i = 0; i < ArcNum; i++)
-    {
-        int from, to;
-        int weight;
-        file >> from >> to >> weight;
-        net.InsertArc(from, to, weight);
-    }
-    return true;
-}
-
-//深度优先遍历
-//辅助函数
-template <class DataType, class WeightType>
-void DFS(const ALDirNetwork<DataType,WeightType> &g, int v,void(*visit)(const DataType &))
-{
-    DataType e;
-    g.SetVisitedTag(v,VISITED);
-    g.GetElem(v, e); visit(e);
-    for(int w = g.GetFirstAdjvex(v); w != -1; w = g.GetNextAdjvex(v,w)){
-		if(g.GetVisitedTag(w) == UNVISITED)
-        	DFS(g, w, visit);
-	}
-}
-		
-//接口函数
-template <class DataType, class WeightType>
-void DFSTraverse(const ALDirNetwork<DataType,WeightType> &graph,void(*visit)(const DataType &))
-{
-    for (int v = 0; v < graph.GetVexNum(); v++) {
-        if (graph.GetVisitedTag(v) == UNVISITED) {
-            DFS(graph, v, visit);
-        }
-    }
-	//重置访问数组
-	for (int v = 0; v < graph.GetVexNum(); v++) {
-        graph.SetVisitedTag(v, UNVISITED);
-    }
-}
-
-
-//广度优先遍历
-//辅助函数
-template <class DataType, class WeightType>
-void BFS(const ALDirNetwork<DataType,WeightType> &g, int v,void(*visit)(const DataType &))
-{
-	LinkQueue<int> vexq;
-	int u, w;
-	DataType e;
-
-	g.SetVisitedTag(v,VISITED);
-	g.GetElem(v,e); visit(e);
-	vexq.EnQueue(v);
-
-	while(!vexq.IsEmpty()){
-		vexq.DelQueue(u);
-		for(w = g.GetFirstAdjvex(u); w != -1; w = g.GetNextAdjvex(u,w)){
-			if (g.GetVisitedTag(w) == UNVISITED){
-				g.GetElem(w, e); visit(e);
-				g.SetVisitedTag(w, VISITED);
-				vexq.EnQueue(w);
-			}
-		}
-	}
-}
-//接口函数
-template <class DataType, class WeightType>
-void BFSTraverse(const ALDirNetwork<DataType,WeightType> &graph,void(*visit)(const DataType &))
-{
-	for (int v = 0; v < graph.GetVexNum(); v++) {
-        if (graph.GetVisitedTag(v) == UNVISITED) {
-            BFS(graph, v, visit);
-        }
-    }
-	//重置访问数组
-	for (int v = 0; v < graph.GetVexNum(); v++) {
-        graph.SetVisitedTag(v, UNVISITED);
-    }
-}
-
-
-/*template <class DataType, class WeightType>
-void DFS(const ALDirNetwork<DataType,WeightType> &g, int v,void(*visit)(const DataType &))
-{
-    DataType e;
-    g.SetVisitedTag(v,VISITED);
-    g.GetElem(v, e); visit(e);
-    for(int w = g.GetFirstAdjvex(v); w != -1; w = g.GetNextAdjvex(v,w)){
-		if(g.GetVisitedTag(w) == UNVISITED)
-        	DFS(g, w, visit);
-	}
-}*/
-template <class DataType, class WeightType>
-bool ExistPathDFSh(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
-	int v1 = graph.GetOrder(a);
-	int v2 = graph.GetOrder(b);
-	if(a == b) return true;
-    graph.SetVisitedTag(v1,VISITED);
-    //graph.GetElem(v1, a);
-	//graph.GetElem(v2, b);
-    for(int w1 = graph.GetFirstAdjvex(v1); w1 != -1; w1 = graph.GetNextAdjvex(v1,w1)){
-		DataType e;
-		graph.GetElem(w1, e);
-		if(graph.GetVisitedTag(w1) == UNVISITED)
-        	if(ExistPathDFSh(graph, e, b))
-				return true;
-	}
-	return false;
-}
-template <class DataType, class WeightType>
-bool ExistPathDFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
-	if(ExistPathDFSh(graph, a, b)){
-		for (int v = 0; v < graph.GetVexNum(); v++) {
-        	graph.SetVisitedTag(v, UNVISITED);
-    	}
-		return true;
-	}
-	else{
-		for (int v = 0; v < graph.GetVexNum(); v++) {
-        	graph.SetVisitedTag(v, UNVISITED);
-    	}
-		return false;
-	}		
-}
-	
-
-template <class DataType, class WeightType>
-bool ExistPathBFS(const ALDirNetwork<DataType,WeightType> &graph, DataType a, DataType b){
-	//重置访问数组
-	for (int v = 0; v < graph.GetVexNum(); v++) {
-        graph.SetVisitedTag(v, UNVISITED);
-    }
-	int v1 = graph.GetOrder(a);
-	int v2 = graph.GetOrder(b);
-	if(a == b) return true;
-
-	LinkQueue<int> vexq;
-	int u,w;
-	DataType e;
-
-	graph.SetVisitedTag(v1,VISITED);
-	vexq.EnQueue(v1);
-
-	while(!vexq.IsEmpty()){
-		vexq.DelQueue(u);
-		for(w = graph.GetFirstAdjvex(u); w != -1; w = graph.GetNextAdjvex(u,w)){
-			if (graph.GetVisitedTag(w) == UNVISITED){
-				graph.GetElem(w, e);
-				graph.SetVisitedTag(w, VISITED);
-				vexq.EnQueue(w);
-				if(e == b) {
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-//Dijkstra算法
-template <class DataType, class WeightType>
-void Dijkstra(const ALDirNetwork<DataType,WeightType> &g, int v0,WeightType* dist,int* path){
-	WeightType mindist, infinity = g.GetInfinity();
-	int u, v;
-	for(v = 0; v < g.GetVexNum(); v++){
-		dist[v]   = g.GetWeight(v0, v);
-		if (dist[v] == infinity) path[v] = -1;
-		else path[v] = v0;
-		g.SetVisitedTag(v, UNVISITED);
-	}
-	g.SetVisitedTag(v0, VISITED);
-	for (int i = 1; i < g.GetVexNum(); i++){
-		u = v0;
-		mindist = infinity;
-		for(v = 0; v < g.GetVexNum(); v++)
-			if (g.GetVisitedTag(v) == UNVISITED && dist[v] < mindist){
-				u = v;
-				mindist = dist[v];
-			}
-		g.SetVisitedTag(u, VISITED);
-		for(v = g.GetFirstAdjvex(u); v != -1; v = g.GetNextAdjvex(u,v ))
-			if (g.GetVisitedTag(v) == UNVISITED && mindist + g.GetWeight(u, v) < dist[v]){
-				dist[v] = mindist + g.GetWeight(u, v);
-				path[v] = u;
-			}
-	}
-}
-
-//OutputShortestPath输出函数
-template <class DataType, class WeightType>
-void OutputShortestPath(const ALDirNetwork<DataType, WeightType> &g, int v0, WeightType* dist, int* path) {
-    int vexNum = g.GetVexNum();
-    WeightType infinity = g.GetInfinity();
-    DataType a,b;
-
-    for (int v = 0; v < vexNum; v++) {
-        if (v == v0) continue; // 跳过起点自身
-
-        // 检查是否可达
-        if (dist[v] == infinity) {
-			g.GetElem(v0,a);
-			g.GetElem(v,b);
-            cout << "There is no path between " << a << " and " << b << endl;
-        } else {
-            // 构建路径数组
-            int pathArray[vexNum]; // 存储路径的数组
-            int count = 0;         // 记录路径中的节点数
-            int current = v;
-
-            // 通过 path 数组向前追溯路径
-            while (current != -1) {
-                pathArray[count++] = current;
-                current = path[current];
-            }
-
-			// 反向输出路径
-			g.GetElem(v0,a);
-			g.GetElem(v,b);
-            cout << "The shortest path between " << a << " and " << b << " is:" << endl ;
-            for (int i = count - 1; i >= 0; i--) {
-				DataType e;
-				g.GetElem(pathArray[i], e);
-                cout << e;
-                if (i > 0) cout << " ";
-            }
-            cout << endl;
-
-			// 输出最短路径长度
-            cout << "The distance is: " << dist[v] <<endl;
-        }
-    }
 }
