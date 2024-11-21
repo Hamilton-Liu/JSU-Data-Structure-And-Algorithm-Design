@@ -6,6 +6,7 @@ class LinkList {
 protected:
 	Node<DataType> *head;								//µ¥Á´±íÍ·Ö¸Õë
 	int length;											//Á´±í³¤¶È
+	void Reverse(Node<DataType> *&h, Node<DataType> *&f, Node<DataType> * &newhead);					//ÄæÖÃµÄÄÚ²¿¸¨Öúº¯Êı
 public:
 	LinkList();											//¹¹Ôìº¯Êı£¬¹¹Ôì¿ÕÁ´±í
 	LinkList(DataType a[], int n);						//¹¹Ôìº¯Êı£¬¹¹ÔìÓĞÔªËØµÄÁ´±í
@@ -18,8 +19,8 @@ public:
 	Status SetElem(int i, DataType &e);					//ĞŞ¸ÄÔªËØ
 	Status InsertElem(int i, DataType &e);				//²åÈëÔªËØ
 	Status DeleteElem(int i, DataType &e);				//É¾³ıÔªËØ
-	void Traverse(void(*visit)(const DataType &)) const;	//±éÀúµ¥Á´±í
-	void Reverse();										//ÄæÖÃµ¥Á´±í
+	void Traverse(void(*visit)(const DataType &)) const;//±éÀúµ¥Á´±í
+	void Reverse();										//ÄæÖÃµ¥Á´±í ½Ó¿Úº¯Êı
 };
 
 template<class DataType>
@@ -153,7 +154,7 @@ Status LinkList<DataType>::DeleteElem(int i, DataType &e) {	//É¾³ıµÚi¸öÔªËØ£¬Í¨¹
 
 template <class DataType>
 void LinkList<DataType>::Traverse(void(*visit)(const DataType &)) const {
-	Node<DataType> *p = head;   					//pÖ¸ÏòµÚÒ»¸öÔªËØ½Úµã
+	Node<DataType> *p = head;   						//pÖ¸ÏòµÚÒ»¸öÔªËØ½Úµã
 	while(p != NULL) {     								//Ñ­»··ÃÎÊÃ¿Ò»¸öÔªËØ½Úµã£¬Ö±µ½pÎª¿ÕÖ¸Õë
 		(*visit)(p->data);  							//Í¨¹ıvisitµ÷ÓÃº¯Êı·ÃÎÊÊı¾İÔªËØ
 		p = p->next;									//ºóÒÆÖ¸ÕëÖ¸Ïòºó¼ÌÔªËØ½Úµã
@@ -161,6 +162,21 @@ void LinkList<DataType>::Traverse(void(*visit)(const DataType &)) const {
 }
 
 template <class DataType>
+void LinkList<DataType>::Reverse(Node<DataType> *&h, Node<DataType> *&f, Node<DataType> * &newhead){
+	if(h->next != NULL){
+		Reverse(h->next,h,newhead);
+		h->next = f;
+	}
+	if(h->next == NULL && h != head){
+		h->next = f;
+		newhead = h;
+	}
+}
+
+template <class DataType>
 void LinkList<DataType>::Reverse(){
-	
+	Node<DataType> * null = NULL;
+	Node<DataType> * newhead;
+	Reverse(head, null, newhead);
+	head = newhead;
 }
