@@ -20,7 +20,7 @@ protected:
 	BTNode<DataType>* LocateElem(BTNode<DataType> *r, DataType &e);			//在以r为根的二叉树中寻找数据元素等于e的节点
 	int Width(BTNode<DataType> *r);											//求二叉树最大宽度
 	int getNodeCount(BTNode<DataType> *r);									//递归求二叉树节点数
-	bool Isomorphism(){};
+	bool Isomorphism(BTNode<DataType> *r1,BTNode<DataType> *r2, BTNode<DataType> *f1, BTNode<DataType> *f2);
 public:
 	BinaryTree():root(NULL) {}												//构造函数
 	virtual ~BinaryTree() { Destroy(root); }								//析构函数
@@ -45,7 +45,7 @@ public:
 	BTNode<DataType>* LocateElem(DataType &e);								//在二叉树中寻找数据元素等于e的节点
 	int Width();															//求二叉树最大宽度（接口）
 	int NodeCount();														//递归求节点数目（接口）
-	bool Isomorphism(){};
+	bool Isomorphism(BinaryTree<char> tree);
 };
 
 template <class DataType>
@@ -291,14 +291,34 @@ int BinaryTree<DataType>::NodeCount(){
 	return getNodeCount(root);
 }
 
+//假设二叉树采用二叉链表存储节点，设计递归算法判断两棵二叉树是否同构（即形态相同）。
 //辅助
 template <class DataType>
-bool BinaryTree<DataType>::Isomorphism(){
+bool BinaryTree<DataType>::Isomorphism(BTNode<DataType> *r1,BTNode<DataType> *r2, BTNode<DataType> *f1, BTNode<DataType> *f2){
+	if (r1 == NULL && r2 == NULL) return true;
+	if (r1 == NULL && r2 != NULL || r1 != NULL && r2 == NULL) return false;
+
+	if(
+		Isomorphism(r1->lChild, r2->lChild, r1, r2) && 
+		Isomorphism(r1->rChild, r2->rChild, r1, r2)
+	) 
+		return true;
+	else
+		return false;
+
+	/*if (r1->lChild == NULL && r1->rChild == NULL &&
+		r2->lChild == NULL && r2->rChild == NULL)
+	{
+		if ((f1->lChild == r1 && f2->lChild == r2) ||
+			(f1->rChild == r1 && f2->rChild == r2))
+			return true;
+		else return false;
+	}*/
 	
 }
 
 //接口
 template <class DataType>
-bool BinaryTree<DataType>::Isomorphism(){
-
+bool BinaryTree<DataType>::Isomorphism(BinaryTree<char> tree){
+	return Isomorphism(root,tree.root,nullptr,nullptr);
 }
