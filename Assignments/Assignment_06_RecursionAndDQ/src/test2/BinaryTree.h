@@ -137,7 +137,7 @@ void BinaryTree<DataType>::CreateBinaryTree() {
 
     CreateBinaryTree(root, preArray, preStart);  // 调用递归函数构建二叉树
 
-    delete preArray;  // 使用完数组后，释放内存
+    delete[] preArray;  // 使用完数组后，释放内存
 }
 
 template <class DataType>
@@ -296,7 +296,7 @@ int BinaryTree<DataType>::NodeCount(){
 template <class DataType>
 bool BinaryTree<DataType>::Isomorphism(BTNode<DataType> *r1,BTNode<DataType> *r2, BTNode<DataType> *f1, BTNode<DataType> *f2){
 	if (r1 == NULL && r2 == NULL) return true;
-	if (r1 == NULL && r2 != NULL || r1 != NULL && r2 == NULL) return false;
+	if ((r1 == NULL && r2 != NULL) || (r1 != NULL && r2 == NULL)) return false;
 
 	if(
 		Isomorphism(r1->lChild, r2->lChild, r1, r2) && 

@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+int main(void)
+{
+	long value;
+	int k;
+
+	cout << "Please enter an integer(3001527):" << endl;
+	cin >> value;//输入待删除的整数：3001527
+	cout << "Please enter the number of digits to be deleted(3):" << endl;
+	cin >> k;//输入删除的位数：3
+	value = DelDigit(value, k);//----------------调用DelDigit函数从value删除k位得到最小数
+	cout << "After deletion, The smallest integer is: " << value << endl;//输出删除后得到的最小数
+
+	system("pause");
+	return 0;
+}
