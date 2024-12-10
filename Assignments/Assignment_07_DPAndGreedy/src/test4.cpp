@@ -7,6 +7,17 @@ using namespace std;
 
 int DelDigit(int v, int k);
 
+int findMax(int a[], int size) {
+    int max = 0;
+	int i = 0;
+	for (i = 0; i < size; i++) {
+        if (a[i] > a[max]) {
+            max = i;
+        }
+    }
+    return max;
+}
+
 int main(void)
 {
 	long value;
@@ -25,6 +36,7 @@ int main(void)
 
 int DelDigit(int v, int k){
 	int res = 0;
+	int i,j = 0;
 
 	//把value转换为数组
 	int t = v;
@@ -33,25 +45,50 @@ int DelDigit(int v, int k){
 		t /= 10;
 		n ++;
 	}
-	int* a = new int[n];
-	for(int i = n, j = 0; i > 0; i--, j++){
+	int a[10010] = {0};
+	for(i = n, j = 0; i > 0; i--, j++){
 		a[j] = (v/(static_cast<int>(pow(10,i-1))))%10;
 	}
 
-	//贪心法
-	int* b = new int[n];
-	int count = 0;
-	for(int i = 0; i < n && count!=k; i--){
-		if(a[i] > a[i+1] || (a[i]!=0 && a[i+1] == 0)){
-			a[i] = -1;
-			count++;
-		} 
+	//贪心
+	bool iszero = false;
+	int zcnt=0,dcnt=0;
+
+	for(i = 0; i < n; i++){
+		if(a[i] == 0){
+			iszero = true;
+			break;
+		}
+	}
+	if(iszero){
+		i = 0;
+		while(a[i] != 0){
+			zcnt++;
+			i++;
+		}
+		if (zcnt <= k){
+			for(i = 0; i < zcnt; i++){
+				a[i] = -1;
+				dcnt++;
+			}
+		}
+	}
+	for(; dcnt<k; dcnt++){
+		a[findMax(a,n)] = -1;
+	}
+
+	//后处理，防止0在开头输出
+	i = 0;
+	while(a[i] == 0 || a[i] == -1){
+		if(a[i] == 0) a[i] = -1;
+		i++;
 	}
 
 	//输出结果
-	for(int i = 0; i < n; i++){
-		res = res + a[i];
-		res *= 10;
+	for(i = 0; i < n; i++){
+		if(a[i] != -1){
+			res = res * 10 + a[i];
+		}
 	}
 	
 	return res;
