@@ -7,7 +7,7 @@ protected:
     pair<int, int> tag[50][50];
 	int **m;
     int r,c;
-    void ShowPath(int i, int j);          //展示路径
+    void ShowPath(int i, int j);          //展示路径辅助函数
 public:
 	MatrixSP(int **m, int r, int c);	//构造函数
     int GetMinSum();			//获取最小和
@@ -74,11 +74,14 @@ int MatrixSP::GetMinSum(){
 
 void MatrixSP::ShowPath(int i, int j) {
     if (i == 0 && j == 0) {
-        cout << "(" << i << "," << j << ") ";
+        cout << m[i][j] << " ";
         return;
     }
     ShowPath(tag[i][j].first, tag[i][j].second);
-    cout << "(" << i << "," << j << ") ";
+    if(i == r-1 && j == c-1) 
+        cout << m[i][j];
+    else
+        cout << m[i][j] << " ";
 }
 void MatrixSP::ShowPath(){
     ShowPath(r-1,c-1);
