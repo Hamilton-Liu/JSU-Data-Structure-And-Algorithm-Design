@@ -22,7 +22,7 @@ MatrixSP::MatrixSP(int **m, int r, int c){
     this->m = m;
     this->r = r;
     this->c = c;
-    //初始化动态规划矩阵和标记矩阵
+    //初始化动态规划矩阵
     for(int i = 0; i < r; i++){
         for(int j = 0; j < c; j++){
             dp[i][j] = 0;}}

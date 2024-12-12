@@ -2,7 +2,7 @@
 using namespace std;
 #include "RefuelProblem.h"//-----包含加油问题类的头文件
 
-//1. 已知一辆汽车加满油之后可以行驶d公里，而旅途中有n个加油站。
+//已知一辆汽车加满油之后可以行驶d公里，而旅途中有n个加油站。
 //设计一个算法求出应在哪些加油站停靠加油，可以使得加油次数最少。
 //假设用数组a存放各加油站之间的距离，例如a[]={2，7，3，6}，表示共有n=4个加油站（编号为0～n-1），从起点到0号加油站的距离为2公里，依次类推。
 
@@ -26,7 +26,6 @@ int main(void)
 		for(int i = 0; i < RFP.GetMinValue(); i++)//输出停靠的加油站编号
 			cout << ans[i] << ' ';
 		cout << endl;
-		delete[]ans;
 	}
 	else//没有解决方案
 		cout << "No solutions!" << endl;
