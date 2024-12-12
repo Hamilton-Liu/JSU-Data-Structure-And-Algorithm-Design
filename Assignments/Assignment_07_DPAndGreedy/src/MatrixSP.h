@@ -26,7 +26,6 @@ MatrixSP::MatrixSP(int **m, int r, int c){
     for(int i = 0; i < r; i++){
         for(int j = 0; j < c; j++){
             dp[i][j] = 0;}}
-
 }
 
 void MatrixSP::Solve(){
