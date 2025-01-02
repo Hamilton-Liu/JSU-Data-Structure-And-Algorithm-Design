@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+#include "MachinePurchaseProblem.h"	//-------------包含定义了机器采购问题类的头文件
+
+int main(void)
+{
+	MachinePurchaseProblem MPP("PurchaseData.txt");//----------定义机器采购问题类的对象，问题有关数据从PurchaseData.txt读取
+
+	if(MPP.Solve())//-----------------调用对象的Solve函数使用分支限界法寻找符合要求的采购方案
+	{
+		int nParts = MPP.GetParts();//--------调用对象的GetParts函数返回机器的部件数目
+		int * solution = MPP.GetSolution();//--------调用对象的GetSolution函数返回机器部件的最佳采购方案
+		cout << "The number of parts of the machine is: " << MPP.GetParts() << endl;
+		cout << "The best procurement plan is:" << endl;
+		for (int i = 1; i <= nParts; i++)
+			cout << "Part " << i << ": supplier " << solution[i] << endl;
+		cout << "The minimum weight of the machine is: " << MPP.GetBestWeight() << endl;//---------调用对象的GetBestWeight函数输出最佳采购方案的机器重量
+		cout << "The cost of the machine is: " << MPP.GetBestCost() << endl;//---------调用对象的GetBestCost函数输出最佳采购方案的机器价格
+	}
+
+	system("pause");
+	return 0;
+}
