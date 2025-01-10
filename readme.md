@@ -1,6 +1,5 @@
 # 江苏大学《数据结构与算法设计》实验源码及报告
 
----
 
 > By Hamilton_Liu, 2024.9, School of Computer Science and Communication Engineering, Jiangsu University.
 
